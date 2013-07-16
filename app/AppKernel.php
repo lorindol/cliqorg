@@ -5,6 +5,13 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 
 class AppKernel extends Kernel
 {
+    public $sysTempDir;
+
+    public function init()
+    {
+        $this->sysTempDir = sys_get_temp_dir();
+    }
+
     public function registerBundles()
     {
         $bundles = array(
@@ -19,7 +26,6 @@ class AppKernel extends Kernel
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
-            $bundles[] = new Acme\DemoBundle\AcmeDemoBundle();
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
@@ -31,5 +37,15 @@ class AppKernel extends Kernel
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
         $loader->load(__DIR__.'/config/config_'.$this->getEnvironment().'.yml');
+    }
+
+    public function getCacheDir()
+    {
+        return $this->sysTempDir . '/cliqorg/cache/' . $this->environment;
+    }
+
+    public function getLogDir()
+    {
+        return $this->sysTempDir . '/cliqorg/logs/' . $this->environment;
     }
 }

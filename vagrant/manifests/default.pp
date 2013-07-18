@@ -137,6 +137,7 @@ class { 'php':
   require       => Package['apache'],
 }
 
+php::module { 'php5-mysql': }
 php::module { 'php5-cli': }
 php::module { 'php5-common': }
 php::module { 'php5-curl': }
@@ -220,4 +221,64 @@ puphpet::ini { 'custom':
 }
 
 
+class { 'mysql::server':
+  config_hash   => { 'root_password' => 'root' }
+}
 
+mysql::db { 'cliqorg':
+  grant    => [
+    'ALL'
+  ],
+  user     => 'cliqorg',
+  password => 'cliqorg',
+  host     => 'localhost',
+  charset  => 'utf8',
+  require  => Class['mysql::server'],
+}
+
+class { 'phpmyadmin':
+  require => [Class['mysql::server'], Class['mysql::config'], Class['php']],
+}
+
+apache::vhost { 'phpmyadmin':
+  server_name => 'phpmyadmin',
+  docroot     => '/usr/share/phpmyadmin',
+  port        => 80,
+  priority    => '10',
+  require     => Class['phpmyadmin'],
+}
+
+file {'create temp dir':
+    path => '/tmp/cliqorg',
+    ensure => directory,
+    owner => vagrant,
+    group => www-data,
+    mode => 0775,
+    require => Package['apache'],
+}
+
+exec {'warmup cache':
+    command => '/srv/cliqorg.local/app/console cache:warmup',
+    cwd => '/srv/cliqorg.local/',
+    require => File['create temp dir'],
+}
+
+file {'set cache dir permissions':
+    path => '/tmp/cliqorg/cache',
+    ensure => directory,
+    owner => vagrant,
+    group => www-data,
+    mode => 0775,
+    require => Exec['warmup cache'],
+    recurse => true,
+}
+
+file {'set logs dir permissions':
+    path => '/tmp/cliqorg/logs',
+    ensure => directory,
+    owner => vagrant,
+    group => www-data,
+    mode => 0775,
+    require => Exec['warmup cache'],
+    recurse => true,
+}

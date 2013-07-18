@@ -1,0 +1,23 @@
+cliq_org_user_register_page:
+  path: /user/register
+  defaults: { _controller: CliqOrgUserBundle:Registration:index }
+  methods: [GET]
+
+cliq_org_user_register_register:
+  path: /user/register
+  defaults: { _controller: CliqOrgUserBundle:Registration:register }
+  methods: [POST]
+
+cliq_org_user_register_done:
+  path: /user/register/done
+  defaults: { _controller: CliqOrgUserBundle:Registration:done }
+
+cliq_org_user_login_page:
+  path: /user/login
+  defaults: { _controller: CliqOrgUserBundle:Login:index }
+  methods: [GET]
+
+cliq_org_user_lgin:
+  path: /user/login
+  defaults: { _controller: CliqOrgUserBundle:Login:login }
+  methods: [POST]

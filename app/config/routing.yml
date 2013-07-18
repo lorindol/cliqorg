@@ -1,4 +1,3 @@
-user:
-    resource: "@UserBundle/Resources/config/routing.yml"
+cliq_org_user:
+    resource: "@CliqOrgUserBundle/Resources/config/routing.yml"
     prefix:   /
-

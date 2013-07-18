@@ -1,0 +1,10 @@
+{%  extends '::base.html.twig' %}
+{% block body %}
+    Registration completed.
+    {% for flashMessage in app.session.flashbag.get('notice') %}
+        <div class="flash-notice">
+            {{  flashMessage }}
+        </div>
+    {% endfor %}
+    you can now <a href="{{ path('') }}
+{% endblock %}

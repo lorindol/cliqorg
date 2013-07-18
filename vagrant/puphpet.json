@@ -9,7 +9,7 @@
             "host": "",
             "guest": ""
         },
-        "foldertype": "nfs",
+        "foldertype": "default",
         "synced_folder": {
             "source": "..\/",
             "target": "\/srv\/cliqorg.local"
@@ -82,7 +82,7 @@
     },
     "database": "mysql",
     "mysql": {
-        "root": "",
+        "root": "<REMOVED>",
         "phpmyadmin": "1",
         "dbuser": {
             "1": {
@@ -90,7 +90,7 @@
                     "ALL"
                 ],
                 "user": "cliqorg",
-                "password": "",
+                "password": "<REMOVED>",
                 "dbname": "cliqorg",
                 "host": "localhost"
             }

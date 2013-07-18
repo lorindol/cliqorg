@@ -34,6 +34,72 @@ class apt_get_update_cyclic{
   exec{'apt-get  update': }
 }
 
+class apt_sources_fix{
+  class { 'apt':
+    purge_sources_list => true
+  }
+  apt::source { '001': 
+    location    => "http://de.archive.ubuntu.com/ubuntu/",   
+    release     => "precise",
+    repos       => "main restricted",
+    include_src => true,
+  }
+  apt::source { '002':
+    location    => "http://de.archive.ubuntu.com/ubuntu/",   
+    release     => "precise-updates",
+    repos       => "main restricted",
+    include_src => true,
+  }
+  apt::source { '003':
+    location    => "http://de.archive.ubuntu.com/ubuntu/",   
+    release     => "precise",
+    repos       => "universe",
+    include_src => true,
+  }
+  apt::source { '004':
+    location    => "http://de.archive.ubuntu.com/ubuntu/",   
+    release     => "precise-updates",
+    repos       => "universe",
+    include_src => true,
+  }
+  apt::source { '005':
+    location    => "http://de.archive.ubuntu.com/ubuntu/",   
+    release     => "precise",
+    repos       => "multiverse",
+    include_src => true,
+  }
+  apt::source { '006':
+    location    => "http://de.archive.ubuntu.com/ubuntu/",   
+    release     => "precise-updates",
+    repos       => "multiverse",
+    include_src => true,
+  }
+  apt::source { '007':
+    location    => "http://de.archive.ubuntu.com/ubuntu/",   
+    release     => "precise-backports",
+    repos       => "main restricted universe multiverse",
+    include_src => true,
+  }
+  apt::source { '008':
+    location    => "http://de.archive.ubuntu.com/ubuntu/",   
+    release     => "precise-security",
+    repos       => "main restricted",
+    include_src => true,
+  }
+  apt::source { '009':
+    location    => "http://de.archive.ubuntu.com/ubuntu/",   
+    release     => "precise-security",
+    repos       => "universe",
+    include_src => true,
+  }
+  apt::source { '010':
+    location    => "http://de.archive.ubuntu.com/ubuntu/",   
+    release     => "precise-security",
+    repos       => "multiverse",
+    include_src => true,
+  }
+}
+
 class apt_ppa(
   $ppa
 ) {
@@ -80,7 +146,11 @@ class apt_ppa(
 }
 
 # run apt-get update before anything else runs
+class {'apt_sources_fix':
+  stage => first
+}
 class {'apt_get_update':
+  require => Class['apt_sources_fix'],
   stage => first
 }
 
